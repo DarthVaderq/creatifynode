@@ -15,7 +15,7 @@ import commentsRouter from "./routes/comments.js";
 import { Telegraf } from "telegraf";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4444;
 
 // Подключение к MongoDB
 mongoose
@@ -48,21 +48,21 @@ app.get("/", (req, res) => {
 });
 
 // Telegraf бот
-if (process.env.TELEGRAM_BOT_TOKEN) {
-  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+// if (process.env.TELEGRAM_BOT_TOKEN) {
+//   const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-  if (process.env.NODE_ENV === "production") {
-    bot.telegram.setWebhook(`https://${process.env.DOMAIN}/webhook`);
-    app.use(bot.webhookCallback("/webhook"));
-    console.log("🤖 Telegraf работает через webhook");
-  } else {
-    bot.launch()
-      .then(() => console.log("🤖 Telegraf работает в режиме polling"))
-      .catch((err) => console.error("❌ Ошибка запуска бота:", err));
-  }
-} else {
-  console.warn("⚠️ TELEGRAM_BOT_TOKEN не установлен, бот не запущен");
-}
+//   if (process.env.NODE_ENV === "production") {
+//     bot.telegram.setWebhook(`https://${process.env.DOMAIN}/webhook`);
+//     app.use(bot.webhookCallback("/webhook"));
+//     console.log("🤖 Telegraf работает через webhook");
+//   } else {
+//     bot.launch()
+//       .then(() => console.log("🤖 Telegraf работает в режиме polling"))
+//       .catch((err) => console.error("❌ Ошибка запуска бота:", err));
+//   }
+// } else {
+//   console.warn("⚠️ TELEGRAM_BOT_TOKEN не установлен, бот не запущен");
+// }
 
 // Запуск сервера
 app.listen(PORT, () => {
