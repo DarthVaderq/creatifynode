@@ -15,7 +15,7 @@ import commentsRouter from "./routes/comments.js";
 import { Telegraf } from "telegraf";
 
 const app = express();
-const PORT = process.env.PORT || 4444;
+const PORT = process.env.PORT || 3000;
 
 // Подключение к MongoDB
 mongoose
