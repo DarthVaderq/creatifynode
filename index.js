@@ -1,51 +1,71 @@
 import dotenv from "dotenv";
 dotenv.config();
+
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import "./config/passport.js"; 
-import authRoutes from "./routes/auth.js"; // Импорт маршрутов
+import "./config/passport.js";
+
+import authRoutes from "./routes/auth.js";
 import categoriesRoute from "./routes/categories.js";
 import projectRoutes from "./routes/card.js";
-import { sendConfirmationEmail } from "./utils/mailer.js";
 import profileRoutes from "./routes/profile.js";
-import commentsRouter from "./routes/comments.js"
+import commentsRouter from "./routes/comments.js";
+
 import { Telegraf } from "telegraf";
 
 const app = express();
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const PORT = process.env.PORT || 4444;
 
+// Подключение к MongoDB
 mongoose
-  .connect(
-    "mongodb+srv://billshifr95:JbGG9uGPV6vnIyiz@cluster0.c0nr3.mongodb.net/REACT-NODE-APP"
-  )
-  .then(() => console.log("База Данных в порядке"))
-  .catch((err) => console.log("База Данных не подключен", err));
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ Успешно подключено к базе данных"))
+  .catch((err) => {
+    console.error("❌ Ошибка подключения к MongoDB:", err.message);
+    process.exit(1); // Завершаем процесс, если база недоступна
+  });
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
-app.use("/projects", projectRoutes);
-app.use("/profile", profileRoutes); // Подключение
-app.use("/comments", commentsRouter);
 
+// Роуты
+app.use("/projects", projectRoutes);
+app.use("/profile", profileRoutes);
+app.use("/comments", commentsRouter);
 app.use("/categories", categoriesRoute);
-// Подключение маршрутов через файл auth.js
 app.use("/auth", authRoutes);
+
+// Базовый роут
 app.get("/", (req, res) => {
-  res.send("API работает");
+  res.send("🎉 API работает");
 });
 
-// Настройка webhook для Telegraf
-if (process.env.NODE_ENV === "production") {
-  bot.telegram.setWebhook("https://api.creatifytech.online/webhook");
-  app.use(bot.webhookCallback("/webhook"));
-  console.log("Telegraf работает через webhook!");
+// Telegraf бот
+if (process.env.TELEGRAM_BOT_TOKEN) {
+  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+
+  if (process.env.NODE_ENV === "production") {
+    bot.telegram.setWebhook(`https://${process.env.DOMAIN}/webhook`);
+    app.use(bot.webhookCallback("/webhook"));
+    console.log("🤖 Telegraf работает через webhook");
+  } else {
+    bot.launch()
+      .then(() => console.log("🤖 Telegraf работает в режиме polling"))
+      .catch((err) => console.error("❌ Ошибка запуска бота:", err));
+  }
 } else {
-  // Для локальной разработки — polling
-  bot.launch();
-  console.log("Telegraf работает в режиме polling!");
+  console.warn("⚠️ TELEGRAM_BOT_TOKEN не установлен, бот не запущен");
 }
 
-const PORT = process.env.PORT || 4444;
-app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
+// Запуск сервера
+app.listen(PORT, () => {
+  console.log(`🚀 Сервер запущен на порту ${PORT}`);
+});
+
