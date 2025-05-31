@@ -3,13 +3,13 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import "./config/passport.js"; 
+import "./config/passport.js";
 import authRoutes from "./routes/auth.js"; // Импорт маршрутов
 import categoriesRoute from "./routes/categories.js";
 import projectRoutes from "./routes/card.js";
 import { sendConfirmationEmail } from "./utils/mailer.js";
 import profileRoutes from "./routes/profile.js";
-import commentsRouter from "./routes/comments.js"
+import commentsRouter from "./routes/comments.js";
 import { Telegraf } from "telegraf";
 
 const app = express();
@@ -47,4 +47,8 @@ if (process.env.NODE_ENV === "production") {
   console.log("Telegraf работает в режиме polling!");
 }
 
-app.listen(4444, () => console.log("Сервер запущен на 4444 порту"));
+const PORT = process.env.PORT || 4444;
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Сервер запущен на порту ${PORT}`)
+);
+// app.listen(4444, () => console.log("Сервер запущен на 4444 порту"));

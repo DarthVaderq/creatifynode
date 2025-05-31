@@ -7,7 +7,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "start:dev": "nodemon index.js",
     "bot": "nodemon middleware/bot.js"
   },
