@@ -13,7 +13,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:4444/auth/google/callback",
+      callbackURL: "https://api.creatifytech.online/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
