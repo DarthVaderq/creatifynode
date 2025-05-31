@@ -10,10 +10,10 @@ import projectRoutes from "./routes/card.js";
 import { sendConfirmationEmail } from "./utils/mailer.js";
 import profileRoutes from "./routes/profile.js";
 import commentsRouter from "./routes/comments.js"
-// import { Telegraf } from "telegraf";
+import { Telegraf } from "telegraf";
 
 const app = express();
-// const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("API работает");
 });
 
-Настройка webhook для Telegraf
+//Настройка webhook для Telegraf
 if (process.env.NODE_ENV === "production") {
   bot.telegram.setWebhook("https://api.creatifytech.online/webhook");
   app.use(bot.webhookCallback("/webhook"));
