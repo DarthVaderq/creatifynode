@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
  */
 export const sendConfirmationEmail = async (recipientEmail, token) => {
   // Формирование ссылки подтверждения
-  const confirmationLink = `http://localhost:4444/auth/verify-email/${token}`; // Убедитесь, что URL соответствует
+  const confirmationLink = `https://api.creatifytech.online/auth/verify-email/auth/verify-email/${token}`; // Убедитесь, что URL соответствует
 
   // Конфигурация письма
   const mailOptions = {
