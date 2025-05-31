@@ -29,16 +29,16 @@ app.get("/", (req, res) => {
   res.send("API работает");
 });
 
-// Настройка webhook для Telegraf
-// if (process.env.NODE_ENV === "production") {
-//   bot.telegram.setWebhook("https://api.creatifytech.online/webhook");
-//   app.use(bot.webhookCallback("/webhook"));
-//   console.log("Telegraf работает через webhook!");
-// } else {
-//   // Для локальной разработки — polling
-//   bot.launch();
-//   console.log("Telegraf работает в режиме polling!");
-// }
+Настройка webhook для Telegraf
+if (process.env.NODE_ENV === "production") {
+  bot.telegram.setWebhook("https://api.creatifytech.online/webhook");
+  app.use(bot.webhookCallback("/webhook"));
+  console.log("Telegraf работает через webhook!");
+} else {
+  // Для локальной разработки — polling
+  bot.launch();
+  console.log("Telegraf работает в режиме polling!");
+}
 
 const PORT = process.env.PORT || 4444;
 app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
