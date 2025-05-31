@@ -1,3 +1,20 @@
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import "./config/passport.js"; 
+import authRoutes from "./routes/auth.js"; // Импорт маршрутов
+import categoriesRoute from "./routes/categories.js";
+import projectRoutes from "./routes/card.js";
+import { sendConfirmationEmail } from "./utils/mailer.js";
+import profileRoutes from "./routes/profile.js";
+import commentsRouter from "./routes/comments.js"
+import { Telegraf } from "telegraf";
+
+const app = express();
+const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
