@@ -47,5 +47,6 @@ if (process.env.NODE_ENV === "production") {
   console.log("Telegraf работает в режиме polling!");
 }
 
-const PORT = process.env.PORT || 4444;
-app.listen(PORT, '0.0.0.0', () => console.log(`Сервер запущен на порту ${PORT}`));
+// const PORT = process.env.PORT || 4444;
+// app.listen(PORT, '0.0.0.0', () => console.log(`Сервер запущен на порту ${PORT}`));
+app.listen(4444, () => console.log("Сервер запущен на 4444 порту"));
