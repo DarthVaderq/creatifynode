@@ -48,4 +48,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 4444;
-app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`Сервер запущен на порту ${PORT}`));
