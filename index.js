@@ -15,6 +15,13 @@ import { Telegraf } from "telegraf";
 const app = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
+mongoose
+  .connect(
+    "mongodb+srv://billshifr95:JbGG9uGPV6vnIyiz@cluster0.c0nr3.mongodb.net/REACT-NODE-APP"
+  )
+  .then(() => console.log("База Данных в порядке"))
+  .catch((err) => console.log("База Данных не подключен", err));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
@@ -29,9 +36,9 @@ app.get("/", (req, res) => {
   res.send("API работает");
 });
 
-//Настройка webhook для Telegraf
+// Настройка webhook для Telegraf
 if (process.env.NODE_ENV === "production") {
-  bot.telegram.setWebhook("https://api.creatifytech.online/webhook");
+  bot.telegram.setWebhook("https://creatifytech.online/webhook");
   app.use(bot.webhookCallback("/webhook"));
   console.log("Telegraf работает через webhook!");
 } else {
