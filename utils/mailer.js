@@ -56,9 +56,9 @@ export const sendConfirmationEmail = async (recipientEmail, token) => {
   };
 
   try {
-    // Отправка письма
-    await transporter.sendMail(mailOptions);
-    console.log(`[✅] Письмо отправлено на ${recipientEmail}`);
+    // Временно отключено для теста скорости регистрации
+    // await transporter.sendMail(mailOptions);
+    console.log(`[✅] (ТЕСТ) Письмо отправлено на ${recipientEmail}`);
   } catch (error) {
     console.error(`[❌] Ошибка отправки: ${error.message}`);
     throw new Error("Не удалось отправить письмо");
