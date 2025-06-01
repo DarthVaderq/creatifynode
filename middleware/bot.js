@@ -1,13 +1,15 @@
+// bot.js
 import dotenv from "dotenv";
 dotenv.config();
+
 import axios from "axios";
 import { Telegraf } from "telegraf";
 import mongoose from "mongoose";
 import User from "../models/User.js";
 
-console.log("Токен бота:", process.env.TELEGRAM_BOT_TOKEN); // Проверка токена
+console.log("Токен бота:", process.env.TELEGRAM_BOT_TOKEN);
 
-// Подключение к MongoDB
+// Подключение к MongoDB (если это нужно отдельно от index.js)
 mongoose
   .connect(process.env.MONGO_URI, {
     serverSelectionTimeoutMS: 30000,
@@ -15,13 +17,13 @@ mongoose
   .then(() => console.log("Подключение к MongoDB успешно"))
   .catch((err) => {
     console.error("Ошибка подключения к MongoDB:", err);
-    process.exit(1); // Завершить процесс, если подключение не удалось
+    process.exit(1);
   });
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 bot.on("text", async (ctx) => {
-  console.log("Получено сообщение:", ctx.message.text); // Логирование
+  console.log("Получено сообщение:", ctx.message.text);
 
   const message = ctx.message.text;
   const userId = ctx.from.id;
@@ -35,7 +37,7 @@ bot.on("text", async (ctx) => {
     try {
       const password = passwordMatch[1].trim();
 
-      // Хеширование пароля перед сохранением
+      // Хеширование пароля
       const bcrypt = await import("bcrypt");
       const passwordHash = await bcrypt.hash(password, 10);
       console.log("Хешированный пароль:", passwordHash);
@@ -60,18 +62,19 @@ bot.on("text", async (ctx) => {
         `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
         {
           chat_id: userId,
-          text: `✅ Спасибо! Ваши данные успешно прошли регистрацию.\n\n🌐 Перейдите по ссылке: https://creatifytech.online/login\n\n Подтвердите свой данные на сайте Creatify.`,
+          text: `✅ Спасибо! Ваши данные успешно прошли регистрацию.\n\n🌐 Перейдите по ссылке: https://creatifytech.online/login\n\nПодтвердите свои данные на сайте Creatify.`,
         }
       );
     } catch (err) {
       console.error("Ошибка при сохранении данных пользователя:", err);
-      ctx.reply("Произошла ошибка при сохранении данных. Попробуйте позже.");
+      ctx.reply("❌ Произошла ошибка при сохранении данных. Попробуйте позже.");
     }
   } else {
     ctx.reply(
-      "Пожалуйста, отправьте сообщение в правильном формате:\nИмя: ...\nФамилия: ...\nEmail: ...\nПароль: ..."
+      "Пожалуйста, отправьте сообщение в правильном формате:\n\nИмя: ...\nФамилия: ...\nEmail: ...\nПароль: ..."
     );
   }
 });
 
-bot.launch();
+
+export default bot;
