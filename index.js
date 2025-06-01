@@ -21,14 +21,7 @@ mongoose
   )
   .then(() => console.log("База Данных в порядке"))
   .catch((err) => console.log("База Данных не подключен", err));
-app.use(cors({
-  origin: [
-    "https://creatifytech.online",
-    "https://api.creatifytech.online",
-    "http://localhost:5173"
-  ],
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
@@ -42,6 +35,26 @@ app.use("/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("API работает");
 });
+
+// CORS: разрешаем публичный фронт и localhost для разработки
+const allowedOrigins = [
+  "https://creatifytech.online",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // разрешаем запросы без origin (например, curl, postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS: Origin not allowed: " + origin), false);
+    },
+    credentials: true,
+  })
+);
 
 // Настройка webhook для Telegraf
 if (process.env.NODE_ENV === "production") {
