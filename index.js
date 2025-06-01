@@ -13,7 +13,7 @@ import commentsRouter from "./routes/comments.js";
 import { Telegraf } from "telegraf";
 import bot from "./middleware/bot.js"; // Импорт бота
 const app = express();
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+
 const DOMAIN = process.env.DOMAIN || "https://api.creatifytech.online";
 
 mongoose
