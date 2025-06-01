@@ -60,7 +60,7 @@ export const register = async (req, res) => {
     const emailToken = generateEmailToken(user._id);
 
     // Отправляем письмо для подтверждения
-    // await sendConfirmationEmail(email, emailToken);
+    await sendConfirmationEmail(email, emailToken);
 
     const token = jwt.sign(
       { userId: user._id }, // Используйте userId вместо id
