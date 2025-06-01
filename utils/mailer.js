@@ -6,12 +6,15 @@ dotenv.config();
 
 // Настройка транспорта для отправки писем
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER, // Email из переменных окружения
-    pass: process.env.EMAIL_PASSWORD, // Пароль/токен приложения
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
+
 
 /**
  * Отправляет письмо с подтверждением регистрации.
