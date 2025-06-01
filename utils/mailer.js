@@ -6,10 +6,12 @@ dotenv.config();
 
 // Настройка транспорта для отправки писем
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER, // Email из переменных окружения
-    pass: process.env.EMAIL_PASSWORD, // Пароль/токен приложения
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
@@ -19,8 +21,8 @@ const transporter = nodemailer.createTransport({
  * @param {string} token - Токен подтверждения
  */
 export const sendConfirmationEmail = async (recipientEmail, token) => {
-  // Формирование ссылки подтверждения
-  const confirmationLink = `https://api.creatifytech.online/auth/verify-email/${token}`; // Убедитесь, что URL соответствует
+  // Формирование ссылки подтверждения через DOMAIN из .env
+  const confirmationLink = `${process.env.DOMAIN}/auth/verify-email/${token}`; // Убедитесь, что URL соответствует
 
   // Конфигурация письма
   const mailOptions = {

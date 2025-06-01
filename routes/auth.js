@@ -53,10 +53,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-    res.redirect(`https://creatifytech.online/google-success?token=${token}`);
+    res.redirect("https://mail.google.com/");
   }
 );
 router.post("/telegram", handleTelegramAuth);

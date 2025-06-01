@@ -14,6 +14,7 @@ import { Telegraf } from "telegraf";
 
 const app = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const DOMAIN = process.env.DOMAIN || "https://api.creatifytech.online";
 
 mongoose
   .connect(
@@ -36,9 +37,29 @@ app.get("/", (req, res) => {
   res.send("API работает");
 });
 
+// CORS: разрешаем публичный фронт и localhost для разработки
+const allowedOrigins = [
+  "https://creatifytech.online",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // разрешаем запросы без origin (например, curl, postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS: Origin not allowed: " + origin), false);
+    },
+    credentials: true,
+  })
+);
+
 // Настройка webhook для Telegraf
 if (process.env.NODE_ENV === "production") {
-  bot.telegram.setWebhook("https://creatifytech.online/webhook");
+  bot.telegram.setWebhook(`${DOMAIN}/webhook`);
   app.use(bot.webhookCallback("/webhook"));
   console.log("Telegraf работает через webhook!");
 } else {
