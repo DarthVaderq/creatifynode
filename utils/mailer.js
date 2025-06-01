@@ -77,7 +77,7 @@ export const sendGoogleLoginInfo = async (
  * Отправка письма для сброса пароля
  */
 export const sendPasswordResetEmail = async (recipientEmail, token) => {
-  const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
+  const resetLink = `${process.env.DOMAIN}/reset-password/${token}`;
 
   try {
     await resend.emails.send({
