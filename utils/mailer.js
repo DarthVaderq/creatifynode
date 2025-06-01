@@ -13,7 +13,7 @@ export const sendConfirmationEmail = async (recipientEmail, token) => {
 
   try {
     await resend.emails.send({
-      from: "Creatify <onboarding@resend.dev>", // работает без верификации домена
+      from: "Creatify <support@creatifytech.online>", // работает без верификации домена
       to: recipientEmail,
       subject: "Подтверждение регистрации",
       html: `
@@ -47,7 +47,7 @@ export const sendGoogleLoginInfo = async (
 ) => {
   try {
     await resend.emails.send({
-      from: "Creatify <onboarding@resend.dev>",
+      from: "Creatify <support@creatifytech.online>",
       to: recipientEmail,
       subject: "Ваш аккаунт в Creatify",
       html: `
@@ -81,7 +81,7 @@ export const sendPasswordResetEmail = async (recipientEmail, token) => {
 
   try {
     await resend.emails.send({
-      from: "Creatify <onboarding@resend.dev>",
+      from: "Creatify <support@creatifytech.online>",
       to: recipientEmail,
       subject: "Сброс пароля",
       html: `
