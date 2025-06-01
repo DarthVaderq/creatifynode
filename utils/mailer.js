@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 /**
  * Отправляет письмо с подтверждением регистрации.
  * @param {string} recipientEmail - Email получателя
