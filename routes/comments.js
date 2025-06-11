@@ -44,5 +44,21 @@ router.post("/", checkAuth, async (req, res) => {
     res.status(500).json({ message: "Ошибка при добавлении комментария" });
   }
 });
-
+router.delete("/:id", checkAuth, async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      return res.status(404).json({ message: "Комментарий не найден" });
+    }
+    // Проверяем, что удаляет автор комментария
+    if (comment.user.toString() !== req.userId) {
+      return res.status(403).json({ message: "Нет прав на удаление" });
+    }
+    await comment.deleteOne();
+    res.json({ message: "Комментарий удалён" });
+  } catch (err) {
+    console.error("Ошибка при удалении комментария:", err);
+    res.status(500).json({ message: "Ошибка при удалении комментария" });
+  }
+});
 export default router;
