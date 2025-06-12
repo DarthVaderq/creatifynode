@@ -21,12 +21,12 @@ router.post("/", checkAuth, async (req, res) => {
     console.log("Полученные данные:", req.body);
     console.log("ПРИШЛИ ДАННЫЕ:", { projectId, text });
     console.log("ПОЛЬЗОВАТЕЛЬ:", req.userId);
-    
-      if (!projectId || !text) {
-        return res
-          .status(400)
-          .json({ message: "Поля 'projectId' и 'text' обязательны." });
-      }
+
+    if (!projectId || !text) {
+      return res
+        .status(400)
+        .json({ message: "Поля 'projectId' и 'text' обязательны." });
+    }
     const newComment = new Comment({
       project: projectId,
       user: req.userId,
@@ -50,9 +50,11 @@ router.delete("/:id", checkAuth, async (req, res) => {
     if (!comment) {
       return res.status(404).json({ message: "Комментарий не найден" });
     }
+    console.log("comment.user:", comment.user.toString());
+    console.log("req.userId:", req.userId);
     // Проверяем, что удаляет автор комментария
     if (!comment.user || comment.user.toString() !== req.userId) {
-      return res.status(403).json({ message: "Нет прав на удаление" });
+      return res.status(403).json({ message: "Нет прав на удалени" });
     }
     await comment.deleteOne();
     res.json({ message: "Комментарий удалён" });
