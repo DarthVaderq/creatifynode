@@ -63,4 +63,22 @@ router.delete("/:id", checkAuth, async (req, res) => {
     res.status(500).json({ message: "Ошибка при удалении комментария" });
   }
 });
+router.patch("/:id", checkAuth, async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      return res.status(404).json({ message: "Комментарий не найден" });
+    }
+    // Проверяем, что редактирует автор комментария
+    if (!comment.user || comment.user.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "Нет прав на редактирование" });
+    }
+    comment.text = req.body.text;
+    await comment.save();
+    res.json({ text: comment.text });
+  } catch (err) {
+    console.error("Ошибка при редактировании комментария:", err);
+    res.status(500).json({ message: "Ошибка при редактировании комментария" });
+  }
+});
 export default router;
