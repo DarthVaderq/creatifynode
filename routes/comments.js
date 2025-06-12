@@ -53,8 +53,8 @@ router.delete("/:id", checkAuth, async (req, res) => {
     console.log("comment.user:", comment.user.toString());
     console.log("req.userId:", req.userId);
     // Проверяем, что удаляет автор комментария
-    if (!comment.user || comment.user.toString() !== req.userId) {
-      return res.status(403).json({ message: "Нет прав на удалени" });
+    if (!comment.user || comment.user.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "Нет прав на удаление" });
     }
     await comment.deleteOne();
     res.json({ message: "Комментарий удалён" });
