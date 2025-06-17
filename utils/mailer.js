@@ -56,9 +56,8 @@ export const sendGoogleLoginInfo = async (
           <p>Вы успешно вошли через Google.</p>
           <p>Ваш логин: <strong>${fullName}</strong></p>
           <p>Ваш пароль: <strong>${password}</strong></p>
-          <p>Пожалуйста, смените пароль в настройках профиля.</p>
-          <a 
-            href="${process.env.DOMAIN}/login"
+          <p>Пожалуйста, сохраните эти данные в безопасном месте.</p>
+            href="${process.env.CLIENT_URL}/login"
             style="padding: 12px 24px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;"
           >
             Перейти на сайт
